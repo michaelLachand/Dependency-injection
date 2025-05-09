@@ -3,20 +3,27 @@
 namespace App\Remote;
 
 use App\Remote\Button\ButtonInterface;
-use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+use Symfony\Contracts\Service\ServiceCollectionInterface;
 
 final class ButtonRemote
 {
     public function __construct(
-        #[AutowireLocator(ButtonInterface::class)]
-        private ContainerInterface $container
-    )
-    {
+        #[AutowireLocator(ButtonInterface::class, indexAttribute: 'key')]
+        private ServiceCollectionInterface $buttons,
+    ) {
     }
 
     public function press(string $name): void
     {
-        $this->container->get($name)->press();
+        $this->buttons->get($name)->press();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function buttons(): iterable
+    {
+        return array_keys($this->buttons->getProvidedServices());
     }
 }

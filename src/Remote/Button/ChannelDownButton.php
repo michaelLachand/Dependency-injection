@@ -4,7 +4,7 @@ namespace App\Remote\Button;
 
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
-#[AsTaggedItem('channel-down')]
+#[AsTaggedItem('channel-down', priority: 30)]
 final class ChannelDownButton implements ButtonInterface
 {
     public function press(): void
